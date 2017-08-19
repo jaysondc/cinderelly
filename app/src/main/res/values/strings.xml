@@ -6,7 +6,6 @@
     <string name="button_save">Save</string>
 
     <!-- STRING EXTRAS -->
-    <string name="EXTRA_EDIT_STRING">edit_string</string>
+    <string name="EXTRA_TASK_ID">edit_list_position</string>
     <string name="EXTRA_EDIT_RETURN_STRING">edit_return_string</string>
-    <string name="EXTRA_LIST_POSITION">edit_list_position</string>
 </resources>

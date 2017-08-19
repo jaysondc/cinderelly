@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.shakeup.cinderelly.R;
 import com.shakeup.cinderelly.adapters.TaskAdapter;
@@ -17,7 +16,7 @@ import com.shakeup.cinderelly.model.Task;
 
 import java.util.ArrayList;
 
-import static com.shakeup.cinderelly.model.DbUtils.getTasks;
+import static com.shakeup.cinderelly.model.DbUtils.getAllTasks;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         mListViewItems = findViewById(R.id.list_to_do);
 
         // Read from database
-        mTasks = getTasks();
+        mTasks = getAllTasks();
         mTaskAdapter = new TaskAdapter(
                 this,
                 mTasks);
@@ -54,12 +53,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // Hndle results from the EditItemActivity
         if (resultCode == RESULT_OK && requestCode == EDIT_REQUEST_CODE) {
-            // Extract name value from result extras
-            String newText = data.getExtras().getString(getString(R.string.EXTRA_EDIT_RETURN_STRING));
-            int newPosition = data.getExtras().getInt(getString(R.string.EXTRA_LIST_POSITION));
-
-            replaceItem(newText, newPosition);
+            refreshTaskList();
         }
     }
 
@@ -77,20 +73,9 @@ public class MainActivity extends AppCompatActivity {
         DbUtils.addTask(itemText, 1);
 
         // Update the array and notify the adapter
-        mTaskAdapter.updateList(DbUtils.getTasks());
+        refreshTaskList();
 
         editTextBox.setText("");
-    }
-
-    /**
-     * Replaces an item in the list with specified contents
-     *
-     * @param itemText     Updated text to set
-     * @param itemPosition Position to set new text
-     */
-    private void replaceItem(String itemText, int itemPosition) {
-//        mTasks.set(itemPosition, itemText);
-//        mTaskAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -106,10 +91,8 @@ public class MainActivity extends AppCompatActivity {
                                                    long id) {
                         // Delete the task from the database
                         Task task = (Task) mTaskAdapter.getItem(position);
-
-                        DbUtils.deleteTask(task.id);
-
-                        mTaskAdapter.updateList(DbUtils.getTasks());
+                        DbUtils.deleteTask(task);
+                        refreshTaskList();
 
                         return true;
                     }
@@ -129,20 +112,22 @@ public class MainActivity extends AppCompatActivity {
                                             int position,
                                             long id) {
 
-                        // Get the item text
-                        TextView textView = view.findViewById(R.id.text_item);
-                        String text = textView.getText().toString();
+                        Task task = (Task) mTaskAdapter.getItem(position);
 
                         // Bundle extras
                         Intent intent = new Intent(getApplicationContext(), EditItemActivity.class);
-                        intent.putExtra(getResources().getString(R.string.EXTRA_EDIT_STRING), text);
-                        intent.putExtra(getResources().getString(R.string.EXTRA_LIST_POSITION), position);
+                        intent.putExtra(getResources().getString(R.string.EXTRA_TASK_ID), task.id);
 
                         // Start intent
                         startActivityForResult(intent, EDIT_REQUEST_CODE);
                     }
                 }
         );
+    }
+
+    private void refreshTaskList() {
+        // Update the array and notify the adapter
+        mTaskAdapter.updateList(DbUtils.getAllTasks());
     }
 
 }

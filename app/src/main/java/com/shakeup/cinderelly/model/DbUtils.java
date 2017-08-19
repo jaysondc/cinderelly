@@ -4,6 +4,8 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
 
+import static com.raizlabs.android.dbflow.sql.language.SQLite.select;
+
 /**
  * Created by Jayson on 8/18/2017.
  *
@@ -17,14 +19,31 @@ public class DbUtils {
      * Returns a list of tasks ordered by descending priority
      * @return an ArrayList of tasks
      */
-    public static ArrayList<Task> getTasks() {
+    public static ArrayList<Task> getAllTasks() {
         ArrayList<Task> tasks = new ArrayList<>();
-        tasks.addAll(SQLite.select()
+        tasks.addAll(select()
                 .from(Task.class)
                 .orderBy(Task_Table.priority.desc())
                 .queryList());
 
         return tasks;
+    }
+
+    /**
+     * Returns a single task with the specified ID
+     * @param taskId is the ID of the task to retrieve
+     * @return
+     */
+    public static Task getTaskFromId(int taskId) {
+        return SQLite.select()
+                .from(Task.class)
+                .where(Task_Table.id.is(taskId))
+                .querySingle();
+    }
+
+    public static void updateTask(Task task, String updatedText){
+        task.text = updatedText;
+        task.save();
     }
 
 
@@ -42,16 +61,10 @@ public class DbUtils {
     }
 
     /**
-     * Returns a list of tasks ordered by descending priority
+     * Delete a given task
      */
-    public static boolean deleteTask() {
-        ArrayList<Task> tasks = new ArrayList<>();
-        tasks.addAll(SQLite.select()
-                .from(Task.class)
-                .orderBy(Task_Table.priority.desc())
-                .queryList());
-
-        return true;
+    public static void deleteTask(Task task) {
+        task.delete();
     }
 
 }

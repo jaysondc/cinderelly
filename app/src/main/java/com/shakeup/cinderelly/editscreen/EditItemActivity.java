@@ -9,6 +9,8 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.shakeup.cinderelly.R;
+import com.shakeup.cinderelly.model.DbUtils;
+import com.shakeup.cinderelly.model.Task;
 
 /**
  * Created by Jayson Dela Cruz on 8/16/2017.
@@ -16,8 +18,9 @@ import com.shakeup.cinderelly.R;
 
 public class EditItemActivity extends AppCompatActivity {
 
-    EditText etEditItem;
-    int editPosition;
+    EditText mEditItemView;
+    int mTaskId;
+    Task mTask;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,28 +28,29 @@ public class EditItemActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_edit);
 
-        etEditItem = (EditText) findViewById(R.id.edit_text_edit_item);
+        mEditItemView = findViewById(R.id.edit_text_edit_item);
 
         // Get extras
         Intent callingIntent = getIntent();
-        etEditItem.setText(callingIntent.getStringExtra(getString(R.string.EXTRA_EDIT_STRING)));
-        editPosition = callingIntent.getIntExtra(getString(R.string.EXTRA_LIST_POSITION), -1);
+        mTaskId = callingIntent.getIntExtra(getString(R.string.EXTRA_TASK_ID), -1);
 
-        etEditItem.requestFocus();
+        // Get the task
+        mTask = DbUtils.getTaskFromId(mTaskId);
+
+        // Set edit text box and request focus
+        mEditItemView.setText(mTask.text);
+        mEditItemView.requestFocus();
 
         // Open soft keyboard
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
     public void saveButtonClick(View view) {
-        // Set return data
-        String text = etEditItem.getText().toString();
-        Intent returnData = new Intent();
-        returnData.putExtra(getString(R.string.EXTRA_EDIT_RETURN_STRING), text);
-        returnData.putExtra(getString(R.string.EXTRA_LIST_POSITION), editPosition);
-        setResult(RESULT_OK, returnData);
+        // Update the record
+        DbUtils.updateTask(mTask, mEditItemView.getText().toString());
 
         // Send result and finish activity
+        setResult(RESULT_OK);
         finish();
     }
 }
