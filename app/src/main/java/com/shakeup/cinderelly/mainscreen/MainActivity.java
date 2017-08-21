@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity
     TaskAdapter mTaskAdapter;
     ListView mListViewItems;
 
-    final String EDIT_DIALOG_TAG = "edit_dialog_tag";
+    public static final String EDIT_DIALOG_TAG = "edit_dialog_tag";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

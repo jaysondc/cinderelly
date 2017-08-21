@@ -5,7 +5,20 @@
     <string name="button_add_item_hint">Enter a new item</string>
     <string name="button_save">Save</string>
 
+    <string name="edit_task_name_hint">Task Name</string>
+    <string name="label_due_date">Due Date</string>
+    <string name="label_priority">Priority</string>
+
+    <string name="title_edit_task">Edit Task</string>
+    <string name="title_new_task">New Task</string>
+
     <!-- STRING EXTRAS -->
     <string name="EXTRA_TASK_ID">edit_list_position</string>
     <string name="EXTRA_EDIT_RETURN_STRING">edit_return_string</string>
+
+    <string-array name="array_priorities">
+        <item>LOW</item>
+        <item>MEDIUM</item>
+        <item>HIGH</item>
+    </string-array>
 </resources>
