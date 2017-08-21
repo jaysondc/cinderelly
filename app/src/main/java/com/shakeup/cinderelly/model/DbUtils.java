@@ -41,8 +41,18 @@ public class DbUtils {
                 .querySingle();
     }
 
+    /**
+     * Update a task with updated args
+     * @param task
+     * @param updatedText
+     */
     public static void updateTask(Task task, String updatedText){
         task.text = updatedText;
+
+        // TODO: Update with using args
+        task.dueDate = System.currentTimeMillis();
+        task.isCompleted = false;
+
         task.save();
     }
 
@@ -57,6 +67,11 @@ public class DbUtils {
         newTask.text = taskText;
         newTask.priority = priority;
         newTask.dateAdded = System.currentTimeMillis();
+
+        // TODO: Update with using args
+        newTask.dueDate = System.currentTimeMillis();
+        newTask.isCompleted = false;
+
         newTask.save();
     }
 

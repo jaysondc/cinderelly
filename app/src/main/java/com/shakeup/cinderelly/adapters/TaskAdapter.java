@@ -3,10 +3,12 @@ package com.shakeup.cinderelly.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.shakeup.cinderelly.R;
@@ -14,6 +16,7 @@ import com.shakeup.cinderelly.Utilities;
 import com.shakeup.cinderelly.model.Task;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Jayson on 8/18/2017.
@@ -49,10 +52,17 @@ public class TaskAdapter extends BaseAdapter {
         // Assign to views
         TextView taskText = view.findViewById(R.id.text_item);
         TextView priorityText = view.findViewById(R.id.text_priority);
+        TextView dueDate = view.findViewById(R.id.text_due_date);
+        CheckBox isCompleted = view.findViewById(R.id.check_is_completed);
 
-        // Set view text
+        // Get date in String format
+        String dateString = DateFormat.format("MM/dd/yyyy", new Date(task.dueDate)).toString();
+
+        // Set view values
         taskText.setText(task.text);
         priorityText.setText(Utilities.priorityToString(task.priority));
+        dueDate.setText(dateString);
+        isCompleted.setChecked(task.isCompleted);
 
         return view;
     }

@@ -28,4 +28,13 @@ public class Task extends BaseModel {
     // higher priorities in the future
     @Column
     public int priority;
+
+    // Optional due date of task
+    @Column
+    public long dueDate;
+
+    // Whether or not this task is complete
+    @Column
+    public boolean isCompleted;
+
 }
