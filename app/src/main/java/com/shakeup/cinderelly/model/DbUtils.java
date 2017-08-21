@@ -82,4 +82,13 @@ public class DbUtils {
         task.delete();
     }
 
+    /**
+     * Set whether or not the given task is complete
+     */
+    public static void setTaskCompleted(Task task, boolean isComplete) {
+        task.isCompleted = isComplete;
+        task.save();
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package com.shakeup.cinderelly.adapters;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.format.DateFormat;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.shakeup.cinderelly.R;
 import com.shakeup.cinderelly.Utilities;
+import com.shakeup.cinderelly.model.DbUtils;
 import com.shakeup.cinderelly.model.Task;
 
 import java.util.ArrayList;
@@ -47,13 +49,13 @@ public class TaskAdapter extends BaseAdapter {
             view = convertView;
         }
 
-        Task task = mTasks.get(position);
+        final Task task = mTasks.get(position);
 
         // Assign to views
-        TextView taskText = view.findViewById(R.id.text_item);
+        final TextView taskText = view.findViewById(R.id.text_item);
         TextView priorityText = view.findViewById(R.id.text_priority);
         TextView dueDate = view.findViewById(R.id.text_due_date);
-        CheckBox isCompleted = view.findViewById(R.id.check_is_completed);
+        final CheckBox isCompleted = view.findViewById(R.id.check_is_completed);
 
         // Get date in String format
         String dateString = DateFormat.format("MM/dd/yyyy", new Date(task.dueDate)).toString();
@@ -63,6 +65,25 @@ public class TaskAdapter extends BaseAdapter {
         priorityText.setText(Utilities.priorityToString(task.priority));
         dueDate.setText(dateString);
         isCompleted.setChecked(task.isCompleted);
+
+        if(isCompleted.isChecked()) {
+            taskText.setPaintFlags(taskText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }
+
+        // Set click listener for checkbox and apply appropriate styles
+        isCompleted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DbUtils.setTaskCompleted(task, isCompleted.isChecked());
+                if (isCompleted.isChecked()) {
+                    taskText.setPaintFlags(taskText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    taskText.setTextAppearance(R.style.TaskTextCompleted);
+                } else {
+                    taskText.setPaintFlags(taskText.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+                    taskText.setTextAppearance(R.style.TaskTextNormal);
+                }
+            }
+        });
 
         return view;
     }

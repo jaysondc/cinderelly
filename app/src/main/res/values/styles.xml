@@ -8,4 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TaskTextNormal" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="TaskTextCompleted" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/colorGrey</item>
+    </style>
+
 </resources>
