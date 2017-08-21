@@ -24,6 +24,7 @@
         android:maxLines="2"
         android:ellipsize="end"
         android:textAppearance="@style/TaskTextNormal"
+        app:layout_goneMarginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.00"
         app:layout_constraintLeft_toRightOf="@+id/check_is_completed"

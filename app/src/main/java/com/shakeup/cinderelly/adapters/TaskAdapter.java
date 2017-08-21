@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +57,7 @@ public class TaskAdapter extends BaseAdapter {
         TextView priorityText = view.findViewById(R.id.text_priority);
         TextView dueDate = view.findViewById(R.id.text_due_date);
         final CheckBox isCompleted = view.findViewById(R.id.check_is_completed);
+        final ConstraintLayout taskDetails = view.findViewById(R.id.task_detail);
 
         // Get date in String format
         String dateString = DateFormat.format("MM/dd/yyyy", new Date(task.dueDate)).toString();
@@ -78,9 +80,12 @@ public class TaskAdapter extends BaseAdapter {
                 if (isCompleted.isChecked()) {
                     taskText.setPaintFlags(taskText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     taskText.setTextAppearance(R.style.TaskTextCompleted);
+                    taskDetails.setVisibility(View.GONE);
+
                 } else {
                     taskText.setPaintFlags(taskText.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
                     taskText.setTextAppearance(R.style.TaskTextNormal);
+                    taskDetails.setVisibility(View.VISIBLE);
                 }
             }
         });
