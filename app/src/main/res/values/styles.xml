@@ -16,4 +16,9 @@
         <item name="android:textColor">@color/colorGrey</item>
     </style>
 
+    <style name="EditDialog" parent="android:Theme.Material.Dialog.MinWidth">
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowMinWidthMinor">90%</item>
+    </style>
+
 </resources>

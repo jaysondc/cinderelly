@@ -1,7 +1,7 @@
 package com.shakeup.cinderelly.mainscreen;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,7 +10,8 @@ import android.widget.ListView;
 
 import com.shakeup.cinderelly.R;
 import com.shakeup.cinderelly.adapters.TaskAdapter;
-import com.shakeup.cinderelly.editscreen.EditItemActivity;
+import com.shakeup.cinderelly.editscreen.EditDialogCallback;
+import com.shakeup.cinderelly.editscreen.EditDialogFragment;
 import com.shakeup.cinderelly.model.DbUtils;
 import com.shakeup.cinderelly.model.Task;
 
@@ -18,13 +19,14 @@ import java.util.ArrayList;
 
 import static com.shakeup.cinderelly.model.DbUtils.getAllTasks;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements EditDialogCallback {
 
     ArrayList<Task> mTasks;
     TaskAdapter mTaskAdapter;
     ListView mListViewItems;
 
-    static final int EDIT_REQUEST_CODE = 0;
+    final String EDIT_DIALOG_TAG = "edit_dialog_tag";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,19 +46,6 @@ public class MainActivity extends AppCompatActivity {
         setupListLongClickListener();
         // Set up click to edit
         setupListClickListener();
-    }
-
-    /**
-     * Handle the results from called activities.
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Hndle results from the EditItemActivity
-        if (resultCode == RESULT_OK && requestCode == EDIT_REQUEST_CODE) {
-            refreshTaskList();
-        }
     }
 
     /**
@@ -114,12 +103,15 @@ public class MainActivity extends AppCompatActivity {
 
                         Task task = (Task) mTaskAdapter.getItem(position);
 
-                        // Bundle extras
-                        Intent intent = new Intent(getApplicationContext(), EditItemActivity.class);
-                        intent.putExtra(getResources().getString(R.string.EXTRA_TASK_ID), task.id);
+                        android.support.v4.app.FragmentTransaction ft =
+                                getSupportFragmentManager().beginTransaction();
 
-                        // Start intent
-                        startActivityForResult(intent, EDIT_REQUEST_CODE);
+                        Bundle args = new Bundle();
+                        args.putInt(getResources().getString(R.string.EXTRA_TASK_ID), task.id);
+                        // Create and show the dialog.
+                        DialogFragment newFragment = EditDialogFragment.newInstance();
+                        newFragment.setArguments(args);
+                        newFragment.show(ft, EDIT_DIALOG_TAG);
                     }
                 }
         );
@@ -130,4 +122,12 @@ public class MainActivity extends AppCompatActivity {
         mTaskAdapter.updateList(DbUtils.getAllTasks());
     }
 
+
+    /**
+     * This is called by our edit dialog once the user saves edits
+     */
+    @Override
+    public void onEditDialogResult() {
+        refreshTaskList();
+    }
 }
