@@ -43,35 +43,25 @@ public class DbUtils {
 
     /**
      * Update a task with updated args
-     * @param task
-     * @param updatedText
      */
-    public static void updateTask(Task task, String updatedText){
+    public static void updateTask(Task task, String updatedText, long updatedDueDate, int updatedPriority){
         task.text = updatedText;
-
-        // TODO: Update with using args
-        task.dueDate = System.currentTimeMillis();
-        task.isCompleted = false;
-
+        task.dueDate = updatedDueDate;
+        task.priority = updatedPriority;
         task.save();
     }
 
 
     /**
      * Adds a new task to the database with the specified text and priority
-     * @param taskText is the text description of the task.
-     * @param priority is the priority of the task.
      */
-    public static void addTask(String taskText, int priority) {
+    public static void addTask(String taskText, String newText, long newDueDate, int newPriority) {
         Task newTask = new Task();
-        newTask.text = taskText;
-        newTask.priority = priority;
-        newTask.dateAdded = System.currentTimeMillis();
-
-        // TODO: Update with using args
-        newTask.dueDate = System.currentTimeMillis();
+        newTask.text = newText;
+        newTask.priority = newPriority;
+        newTask.dueDate = newDueDate;
         newTask.isCompleted = false;
-
+        newTask.dateAdded = System.currentTimeMillis();
         newTask.save();
     }
 

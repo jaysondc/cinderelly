@@ -5,7 +5,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import com.shakeup.cinderelly.R;
@@ -54,17 +53,12 @@ public class MainActivity extends AppCompatActivity
      * @param view the view clicked
      */
     public void onAddItem(View view) {
-        EditText editTextBox = findViewById(R.id.edit_text_new_item);
-        String itemText = editTextBox.getText().toString();
+        android.support.v4.app.FragmentTransaction ft =
+                getSupportFragmentManager().beginTransaction();
 
-        // Add item as low priority for now
-        // TODO: Custom priority
-        DbUtils.addTask(itemText, 1);
-
-        // Update the array and notify the adapter
-        refreshTaskList();
-
-        editTextBox.setText("");
+        // Create and show the dialog.
+        DialogFragment newFragment = EditDialogFragment.newInstance();
+        newFragment.show(ft, EDIT_DIALOG_TAG);
     }
 
     /**
@@ -100,7 +94,6 @@ public class MainActivity extends AppCompatActivity
                                             View view,
                                             int position,
                                             long id) {
-
                         Task task = (Task) mTaskAdapter.getItem(position);
 
                         android.support.v4.app.FragmentTransaction ft =

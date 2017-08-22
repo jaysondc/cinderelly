@@ -14,6 +14,10 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 @Table(database = TaskDatabase.class)
 public class Task extends BaseModel {
 
+    public static final int PRIORITY_LOW = 0;
+    public static final int PRIORITY_MEDIUM = 1;
+    public static final int PRIORITY_HIGH = 2;
+
     @Column
     @PrimaryKey(autoincrement = true)
     public int id;
