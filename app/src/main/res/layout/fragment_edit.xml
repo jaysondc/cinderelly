@@ -20,14 +20,15 @@
 
         <ImageView
             android:id="@+id/icon_due_date"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:src="@drawable/ic_clock_grey600_36dp"
-            tools:layout_editor_absoluteX="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_clock_grey600_36dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="8dp" />
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent" />
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline_date"
@@ -38,9 +39,9 @@
 
         <Spinner
             android:id="@+id/spinner_date"
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
             android:prompt="@string/label_priority"
             android:spinnerMode="dialog"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -57,14 +58,15 @@
 
         <ImageView
             android:id="@+id/icon_priority"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:src="@drawable/ic_information_grey600_36dp"
-            tools:layout_editor_absoluteX="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_information_grey600_36dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="8dp" />
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent" />
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline_priority"
@@ -93,7 +95,8 @@
         android:id="@+id/button_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_save"
-        android:layout_gravity="right" />
+        android:layout_gravity="right"
+        style="@android:style/Widget.Material.Button.Colored"
+        android:text="@string/button_save" />
 
 </LinearLayout>

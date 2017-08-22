@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.shakeup.cinderelly.MainActivity">
+    tools:context="com.shakeup.cinderelly.mainscreen.MainActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -21,7 +21,8 @@
             android:layout_height="match_parent"
             android:scaleType="fitStart"
             android:src="@drawable/cinderelly_logo"
-            android:layout_margin="8dp"/>
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"/>
 
     </android.support.v7.widget.Toolbar>
 
