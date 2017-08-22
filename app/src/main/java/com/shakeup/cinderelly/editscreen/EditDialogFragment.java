@@ -77,7 +77,6 @@ public class EditDialogFragment
 
         if (mTaskId == -1) {
             mIsNewTask = true;
-            getDialog().setTitle(getString(R.string.title_new_task));
             // Create a new task
             mTask = new Task();
             // Set task variables
@@ -86,7 +85,6 @@ public class EditDialogFragment
 
         } else {
             mIsNewTask = false;
-            getDialog().setTitle(R.string.title_edit_task);
             // Get the current
             mTask = DbUtils.getTaskFromId(mTaskId);
             // Set task variables
@@ -151,7 +149,7 @@ public class EditDialogFragment
     public void saveButtonClick() {
         // Validate the inputs
         String taskText = mEditItemView.getText().toString();
-        if (taskText == "") {
+        if (taskText.equals("")) {
             Toast.makeText(getContext(), "The task must have a name!", Toast.LENGTH_SHORT).show();
             return;
         } else if (mIsNewTask) {

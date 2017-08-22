@@ -18,6 +18,7 @@
 
     <style name="EditDialog" parent="android:Theme.Material.Light.Dialog">
         <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowNoTitle">true</item>
         <item name="android:windowMinWidthMinor">90%</item>
     </style>
 
