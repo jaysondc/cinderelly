@@ -5,7 +5,7 @@
 
 Submitted by: **Jayson Dela Cruz**
 
-Time spent: **12** hours spent in total
+Time spent: **13** hours spent in total
 
 ## User Stories
 
@@ -27,12 +27,13 @@ The following **optional** features are implemented:
 The following **additional** features are implemented:
 
 * [x] Add the ability to mark tasks as complete
+* [x] Add section headers for task priorities
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user functions:
 
-![GIF Walkthrough](http://i.imgur.com/eWq8Vm9.gif)
+![GIF Walkthrough](http://i.imgur.com/sGvdX5i.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
