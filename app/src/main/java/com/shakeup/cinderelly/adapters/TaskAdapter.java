@@ -9,6 +9,7 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -68,24 +69,18 @@ public class TaskAdapter extends BaseAdapter {
         dueDate.setText(dateString);
         isCompleted.setChecked(task.isCompleted);
 
-        if(isCompleted.isChecked()) {
-            taskText.setPaintFlags(taskText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        }
+        // Modify views if the task is completed
+        showTaskComplete(view, isCompleted.isChecked());
 
         // Set click listener for checkbox and apply appropriate styles
         isCompleted.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DbUtils.setTaskCompleted(task, isCompleted.isChecked());
-                if (isCompleted.isChecked()) {
-                    taskText.setPaintFlags(taskText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                    taskText.setTextAppearance(R.style.TaskTextCompleted);
-                    taskDetails.setVisibility(View.GONE);
 
-                } else {
-                    taskText.setPaintFlags(taskText.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
-                    taskText.setTextAppearance(R.style.TaskTextNormal);
-                    taskDetails.setVisibility(View.VISIBLE);
+                View listItemView = (View) view.getParent();
+                if (listItemView != null){
+                    showTaskComplete(listItemView, isCompleted.isChecked());
                 }
             }
         });
@@ -93,6 +88,26 @@ public class TaskAdapter extends BaseAdapter {
         return view;
     }
 
+    /**
+     * Changes the task appearance to show completed or uncompleted tasks
+     * @param view is the view we're modifying
+     * @param complete is whether or not the task is complete
+     */
+    void showTaskComplete(View view, boolean complete) {
+        TextView taskText = view.findViewById(R.id.text_item);
+        ConstraintLayout taskDetails = view.findViewById(R.id.task_detail);
+
+        if (complete) {
+            taskText.setPaintFlags(taskText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            taskText.setTextAppearance(R.style.TaskTextCompleted);
+            taskDetails.setVisibility(View.GONE);
+        } else {
+            taskText.setPaintFlags(taskText.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+            taskText.setTextAppearance(R.style.TaskTextNormal);
+            taskDetails.setVisibility(View.VISIBLE);
+        }
+    }
+    
     /**
      * Update the adapter with a new ArrayList of Tasks
      * @param newList ArrayList of type Task
