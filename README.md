@@ -33,7 +33,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user functions:
 
-![GIF Walkthrough](http://i.imgur.com/sGvdX5i.gif)
+<img src="http://i.imgur.com/sGvdX5i.gif" alt="GIF Walkthrough" width="300"/>
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
@@ -50,10 +50,6 @@ As part of your pre-work submission, please reflect on the app and answer the fo
 **Answer:** The `ArrayAdapter` is used to populate the `ListView` using an array of items. Adapters in general are important because they specify how data gets translated into `Views` for the user.
 
 The `getView` method in `ArrayAdapter` provides a `convertView` object which is a reference to a `View` object that can be recycled. Instead of creating an entirely new `View` to populate, you can simply overwrite the `convertView` with new data to improve performance. 
-
-## Notes
-
-[None]
 
 ## License
 
