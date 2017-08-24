@@ -9,8 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:focusable="false"
         android:buttonTint="@color/colorGrey"
+        android:focusable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -20,16 +20,16 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="2"
-        android:ellipsize="end"
         android:textAppearance="@style/TaskTextNormal"
-        app:layout_goneMarginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.00"
         app:layout_constraintLeft_toRightOf="@+id/check_is_completed"
         app:layout_constraintRight_toLeftOf="@+id/task_detail"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginEnd="16dp"
         tools:text="This is a test task!" />
 
     <android.support.constraint.ConstraintLayout
@@ -46,6 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/text_due_date"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"

@@ -101,15 +101,19 @@ public class MainActivity extends AppCompatActivity
                                             long id) {
                         Task task = (Task) mTaskAdapter.getItem(position);
 
-                        android.support.v4.app.FragmentTransaction ft =
-                                getSupportFragmentManager().beginTransaction();
+                        if(task.viewType == Task.VIEW_TYPE_ITEM) {
+                            android.support.v4.app.FragmentTransaction ft =
+                                    getSupportFragmentManager().beginTransaction();
 
-                        Bundle args = new Bundle();
-                        args.putInt(getResources().getString(R.string.EXTRA_TASK_ID), task.id);
-                        // Create and show the dialog.
-                        DialogFragment newFragment = EditDialogFragment.newInstance();
-                        newFragment.setArguments(args);
-                        newFragment.show(ft, EDIT_DIALOG_TAG);
+                            Bundle args = new Bundle();
+                            args.putInt(getResources().getString(R.string.EXTRA_TASK_ID), task.id);
+                            // Create and show the dialog.
+                            DialogFragment newFragment = EditDialogFragment.newInstance();
+                            newFragment.setArguments(args);
+                            newFragment.show(ft, EDIT_DIALOG_TAG);
+                        } else {
+                            // Do nothing since the user clicked a section header
+                        }
                     }
                 }
         );

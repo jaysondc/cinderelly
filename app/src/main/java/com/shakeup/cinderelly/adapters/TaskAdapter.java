@@ -22,11 +22,15 @@ import com.shakeup.cinderelly.model.Task;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.halfbit.pinnedsection.PinnedSectionListView;
+
+import static com.shakeup.cinderelly.model.Task.VIEW_TYPE_SECTION;
+
 /**
  * Created by Jayson on 8/18/2017.
  */
 
-public class TaskAdapter extends BaseAdapter {
+public class TaskAdapter extends BaseAdapter implements PinnedSectionListView.PinnedSectionListAdapter{
 
     ArrayList<Task> mTasks;
     Context mContext;
@@ -34,6 +38,42 @@ public class TaskAdapter extends BaseAdapter {
     public TaskAdapter(@NonNull Context context, ArrayList<Task> tasks) {
         mTasks = tasks;
         mContext = context;
+
+        addSections();
+    }
+
+    /**
+     * Add task headers to our ArrayList
+     */
+    private void addSections() {
+
+        // High
+        Task headerHigh = new Task();
+        Task headerMedium = new Task();
+        Task headerLow = new Task();
+
+        headerHigh.viewType = VIEW_TYPE_SECTION;
+        headerMedium.viewType = VIEW_TYPE_SECTION;
+        headerLow.viewType = VIEW_TYPE_SECTION;
+
+        headerHigh.text = "HIGH";
+        headerMedium.text = "MEDIUM";
+        headerLow.text = "LOW";
+
+        int i = mTasks.size()-1;
+        while(i >= 0 && mTasks.get(i).priority != Task.PRIORITY_MEDIUM
+                && mTasks.get(i).priority != Task.PRIORITY_HIGH) {
+            i--;
+        }
+        mTasks.add(i+1, headerLow);
+
+        while(i >= 0 && mTasks.get(i).priority != Task.PRIORITY_HIGH) {
+            i--;
+        }
+        mTasks.add(i+1, headerMedium);
+
+        mTasks.add(0, headerHigh);
+
     }
 
     /**
@@ -42,48 +82,60 @@ public class TaskAdapter extends BaseAdapter {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+        final Task task = mTasks.get(position);
+
         View view;
         if (convertView == null) {
             LayoutInflater layoutInflater =
                     (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = layoutInflater.inflate(R.layout.listitem_todo, parent, false);
+            if (task.viewType == Task.VIEW_TYPE_SECTION) {
+                view = layoutInflater.inflate(R.layout.listitem_section_header, parent, false);
+            } else {
+                view = layoutInflater.inflate(R.layout.listitem_todo, parent, false);
+            }
         } else {
             view = convertView;
         }
 
-        final Task task = mTasks.get(position);
 
-        // Assign to views
-        final TextView taskText = view.findViewById(R.id.text_item);
-        TextView priorityText = view.findViewById(R.id.text_priority);
-        TextView dueDate = view.findViewById(R.id.text_due_date);
-        final CheckBox isCompleted = view.findViewById(R.id.check_is_completed);
-        final ConstraintLayout taskDetails = view.findViewById(R.id.task_detail);
+        if (task.viewType == Task.VIEW_TYPE_SECTION) {
+            TextView taskText = view.findViewById(R.id.text_item);
+            taskText.setText(task.text);
+            view.setClickable(false);
+        } else {
+            // Assign to views
+            final TextView taskText = view.findViewById(R.id.text_item);
+            TextView priorityText = view.findViewById(R.id.text_priority);
+            TextView dueDate = view.findViewById(R.id.text_due_date);
+            final CheckBox isCompleted = view.findViewById(R.id.check_is_completed);
+            final ConstraintLayout taskDetails = view.findViewById(R.id.task_detail);
 
-        // Get date in String format
-        String dateString = DateFormat.format("MM/dd/yyyy", new Date(task.dueDate)).toString();
+            // Get date in String format
+            String dateString = DateFormat.format("MM/dd/yyyy", new Date(task.dueDate)).toString();
 
-        // Set view values
-        taskText.setText(task.text);
-        priorityText.setText(Utilities.priorityToString(task.priority));
-        dueDate.setText(dateString);
-        isCompleted.setChecked(task.isCompleted);
+            // Set view values
+            taskText.setText(task.text);
+            priorityText.setText(Utilities.priorityToString(task.priority));
+            dueDate.setText(dateString);
+            isCompleted.setChecked(task.isCompleted);
 
-        // Modify views if the task is completed
-        showTaskComplete(view, isCompleted.isChecked());
+            // Modify views if the task is completed
+            showTaskComplete(view, isCompleted.isChecked());
 
-        // Set click listener for checkbox and apply appropriate styles
-        isCompleted.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DbUtils.setTaskCompleted(task, isCompleted.isChecked());
+            // Set click listener for checkbox and apply appropriate styles
+            isCompleted.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DbUtils.setTaskCompleted(task, isCompleted.isChecked());
 
-                View listItemView = (View) view.getParent();
-                if (listItemView != null){
-                    showTaskComplete(listItemView, isCompleted.isChecked());
+                    View listItemView = (View) view.getParent();
+                    if (listItemView != null){
+                        showTaskComplete(listItemView, isCompleted.isChecked());
+                    }
                 }
-            }
-        });
+            });
+        }
 
         return view;
     }
@@ -107,7 +159,7 @@ public class TaskAdapter extends BaseAdapter {
             taskDetails.setVisibility(View.VISIBLE);
         }
     }
-    
+
     /**
      * Update the adapter with a new ArrayList of Tasks
      * @param newList ArrayList of type Task
@@ -115,7 +167,13 @@ public class TaskAdapter extends BaseAdapter {
     public void updateList(ArrayList<Task> newList) {
         mTasks.clear();
         mTasks.addAll(newList);
+        addSections();
         this.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean isItemViewTypePinned(int viewType) {
+        return viewType == Task.VIEW_TYPE_SECTION;
     }
 
     @Override
@@ -151,12 +209,12 @@ public class TaskAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int i) {
-        return 0;
+        return mTasks.get(i).viewType;
     }
 
     @Override
     public int getViewTypeCount() {
-        return 1;
+        return 2;
     }
 
     @Override

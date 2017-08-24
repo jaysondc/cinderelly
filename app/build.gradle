@@ -45,6 +45,9 @@ dependencies {
     compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
     compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
 
+    // Pinned ListView
+    compile "de.halfbit:pinned-section-listview:1.0.0"
+
 
     testCompile 'junit:junit:4.12'
 }

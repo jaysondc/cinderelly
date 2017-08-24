@@ -18,6 +18,12 @@ public class Task extends BaseModel {
     public static final int PRIORITY_MEDIUM = 1;
     public static final int PRIORITY_HIGH = 2;
 
+    public static final int VIEW_TYPE_ITEM = 0;
+    public static final int VIEW_TYPE_SECTION = 1;
+
+    // Default type is item
+    public int viewType = VIEW_TYPE_ITEM;
+
     @Column
     @PrimaryKey(autoincrement = true)
     public int id;
